@@ -103,83 +103,95 @@ double calc(char *str)
 	i = -1;
 	while (is_space(str[++i]));
 	if (str[i] == '-')
+	{
+		++once;
 		--mal_size;
+	}
 	nums = malloc(sizeof(int *) * mal_size);
-	signs = malloc(sizeof(char *) * mal_size + 2);
-	signs[0] = '+';
-	signs[mal_size + 1] = '\0';
+	signs = malloc(sizeof(char *) * mal_size + 1);
+	signs[mal_size] = '\0';
 	i = 0;
 	k = 0;
+	int s_n = 0;
 	for (int j = 0; j < mal_size; ++j)
 		nums[j] = 0;
 	while (str[i])
 	{
-		if (!once && str[i] == '-')
-		{
-			++once;
-			signs[0] = '-';
-			++i;
-		}
 		if (is_num(str[i]))
 			nums[k] = nums[k] * 10 + (str[i] - '0');
 		if (is_valid(str[i], 1))
 		{
+			signs[s_n] = str[i];
+			++s_n;
 			++k;
-			signs[k] = str[i];
+		}
+		if (once == 1)
+		{
+			--k;
+			++once;
 		}
 		++i;
 	}
-	i = 1;
-	// if (signs[0] == '-')
-	// 	nums[0] *= -1;
 	for (int j = 0; j < mal_size; ++j)
 	{
-		if (signs[j] == '-')
-			nums[j] *= -1;
+		if (once == 2)
+		{
+			if (signs[j] == '-')
+				nums[j] *= -1;
+		}
+		else
+		{
+			if (signs[j] == '-')
+				nums[j + 1] *= -1;
+		}
 	}
 	for (int j = 0; j < mal_size; ++j)
 	{
 		printf("%f, ", nums[j]);
 	}
 	printf("\n");
-	while (i < mal_size)
-	{
-		if (signs[i] == '*')
-		{
-			nums[i - 1] = nums[i - 1] * nums[i];
-			nums[i] = 0;
-			signs[i] = '+';
-		}
-		if (signs[i] == '/')
-		{
-			nums[i - 1] = nums[i - 1] / nums[i];
-			nums[i] = 0;
-			signs[i] = '+';
-		}
-		++i;
-		for (int j = 0; j < mal_size; ++j)
-		{
-			if (signs[j] == '-' || signs[j] == '+')
-				++checker;
-		}
-		if (checker == mal_size)
-			break ;
-	}
-	
+	i = 0;
+	int temp, jk = 0;
+	if (once == 0)
+		--mal_size;
 	for (int j = 0; j < mal_size; ++j)
 	{
+		printf("%c, ", signs[j]);
+	}
+	printf("\na%d\n", mal_size);
+	while (jk < mal_size - 1)
+	{
+		temp = jk + 1;
+		while (signs[jk] == '*' || signs[jk] == '/')
+		{
+			if (once){
+				--jk;
+				temp = jk + 1;}
+			if (signs[temp - 1] == '*')
+			{
+				printf("%d %f %f\n", jk, nums[jk] , nums[temp]);
+				nums[jk] = nums[jk] * nums[temp];
+				nums[temp] = 0;
+			}
+			else
+			{
+				nums[jk] = nums[jk] / nums[temp];
+				nums[temp] = 0;
+			}
+			++temp;
+			if (signs[temp - 1] != '/' && signs[temp - 1] != '*')
+				break ;
+		}
+		for (int j = 0; j < jk; j++)
+			signs[j] = '+';
+		jk = temp;
+	}
+	if (once == 0)
+		++mal_size;
+	for (int j = 0; j < mal_size; ++j)
 		result += nums[j];
-	}
-	 
-	// for (int j = 0; j < mal_size; ++j)
-	// {
-	// 	printf("%c, ", signs[j]);
-	// }
-	// printf("\n");
-	for (int j = 0; j < mal_size; ++j)
-	{
-		printf("%f, ", nums[j]);
-	}
+	// for (int j = 0; j < mal_size + 1; ++j)
+	// 	printf("%f, ", nums[j]);
 	printf("\n");
 	return (result);
 }
