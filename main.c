@@ -89,10 +89,12 @@ int symb_check(int argc, char **argv)
 	return (0);
 }
 
-int calc(char *str)
+double calc(char *str)
 {
-	int result = 0, mal_size = 1, i = -1, k, once = 0, end;
-	int *nums;
+	int mal_size = 1, i = -1, k, once = 0;
+	int checker = 0;
+	double result = 0;
+	double *nums;
 	char *signs;
 
 	while (str[++i])
@@ -128,31 +130,57 @@ int calc(char *str)
 		++i;
 	}
 	i = 1;
-	end = 0;
-	while (end < mal_size)
+	// if (signs[0] == '-')
+	// 	nums[0] *= -1;
+	for (int j = 0; j < mal_size; ++j)
+	{
+		if (signs[j] == '-')
+			nums[j] *= -1;
+	}
+	for (int j = 0; j < mal_size; ++j)
+	{
+		printf("%f, ", nums[j]);
+	}
+	printf("\n");
+	while (i < mal_size)
 	{
 		if (signs[i] == '*')
 		{
-			result += nums[i - 1] * nums[i];
-			++end;
+			nums[i - 1] = nums[i - 1] * nums[i];
+			nums[i] = 0;
+			signs[i] = '+';
 		}
 		if (signs[i] == '/')
 		{
-			result += nums[i - 1] / nums[i];
-			++end;
+			nums[i - 1] = nums[i - 1] / nums[i];
+			nums[i] = 0;
+			signs[i] = '+';
 		}
 		++i;
+		for (int j = 0; j < mal_size; ++j)
+		{
+			if (signs[j] == '-' || signs[j] == '+')
+				++checker;
+		}
+		if (checker == mal_size)
+			break ;
 	}
+	
+	for (int j = 0; j < mal_size; ++j)
+	{
+		result += nums[j];
+	}
+	 
 	// for (int j = 0; j < mal_size; ++j)
 	// {
 	// 	printf("%c, ", signs[j]);
 	// }
 	// printf("\n");
-	// for (int j = 0; j < mal_size; ++j)
-	// {
-	// 	printf("%d, ", nums[j]);
-	// }
-	// printf("\n");
+	for (int j = 0; j < mal_size; ++j)
+	{
+		printf("%f, ", nums[j]);
+	}
+	printf("\n");
 	return (result);
 }
 
@@ -160,6 +188,6 @@ int main(int argc, char **argv)
 {
 	if (symb_check(argc, argv))
 		return(1);
-	printf("The answer is : %d\n", calc(argv[1]));
+	printf("The answer is : %f\n", calc(argv[1]));
 	return (0);
 }
