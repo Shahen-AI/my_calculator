@@ -7,8 +7,12 @@ ${NAME} : ${OBJS}
 
 all : ${NAME}
 
-clean : rm -rf ${NAME}
+clean : 
+	@rm -rf ${OBJS}
 
-re : clean all
+fclean : clean
+	@rm -rf ${NAME}
 
-.PHONY : all clean re
+re : fclean all
+
+.PHONY : all clean fclean re
