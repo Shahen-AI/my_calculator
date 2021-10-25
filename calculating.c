@@ -34,8 +34,15 @@ double calc(char *str)
 			signs[k] = str[i];
 			++k;
 		}
+		if (once == 1)
+		{
+			++once;
+			--k;
+		}
 		++i;
 	}
+	if (once == 2)
+		signs[0] = '-';
 	for (int j = 0; j < mal_size; ++j)
 	{
 		if (signs[j] == '-')

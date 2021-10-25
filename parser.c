@@ -1,28 +1,39 @@
 #include "my_calc.h"
 
-int symb_check(int argc, char **argv)
+char *symb_check(int argc, char **argv)
 {
 	int i = 0, j, len = ft_strlen(argv[1]);
+	char *str;
+	char test[100];
 
 	if (argc > 2)
-		return (printer("Error : Too many arguments.", 1));
+		return (printer("Error : Too many arguments.", 0));
 	if (argc == 1)
-		return (printer("Error : Please enter an argument.", 1));
-	if (is_valid(argv[1][len - 1], 1) || is_valid(argv[1][0], 0))
-		return (printer("Error : There is some shit too.", 1));
-	while (is_space(argv[1][--len]))
-		if (is_valid(argv[1][len - 1], 1))
-			return (printer("Error : There is some shit tooo.", 1));
-	while (i < ft_strlen(argv[1]))
 	{
-		if (!is_valid(argv[1][i], 1) && !is_num(argv[1][i]) && !is_space(argv[1][i]))
-			return (printer("Error : There is some invalid characters.", 1));
-		if (is_valid(argv[1][i], 1) && i != 0)
+		printf("Enter the math expression : ");
+		scanf("%s", test);
+		str = malloc(sizeof(str) * ft_strlen(test) + 1);
+		for (int x; x < ft_strlen(test); ++x)
+			str[x] = test[x];
+		str[ft_strlen(test)] = '\0';
+	}
+	else
+		str = argv[1];
+	if (is_valid(str[len - 1], 1) || is_valid(str[0], 0))
+		return (printer("Error : Invalid math expression.", 0));
+	while (is_space(str[--len]))
+		if (is_valid(str[len - 1], 1))
+			return (printer("Error : Invalid math expression.", 0));
+	while (i < ft_strlen(str))
+	{
+		if (!is_valid(str[i], 1) && !is_num(str[i]) && !is_space(str[i]))
+			return (printer("Error : There is invalid characters in the expression.", 0));
+		if (is_valid(str[i], 1) && i != 0)
 		{
 			j = i - 1;
-			while (!is_valid(argv[1][j], 1) && j >= 0)
+			while (!is_valid(str[j], 1) && j >= 0)
 			{
-				if (is_num(argv[1][j]))
+				if (is_num(str[j]))
 				{
 					j = -2;
 					break ;
@@ -30,13 +41,13 @@ int symb_check(int argc, char **argv)
 				--j;
 			}
 			if (j != -2 && j != -1)
-				return (printer("Error : There is some shit.", 1));
+				return (printer("Error : Invalid math expression.", 0));
 		}
 		++i;
 	}
 	i = -1;
-	while (is_space(argv[1][++i]))
-		if (is_valid(argv[1][i + 1], 0))
-			return (printer("Error : There is some shit too.", 1));
-	return (0);
+	while (is_space(str[++i]))
+		if (is_valid(str[i + 1], 0))
+			return (printer("Error : Invalid math expression.", 0));
+	return (str);
 }

@@ -2,8 +2,11 @@
 
 int main(int argc, char **argv)
 {
-	if (symb_check(argc, argv))
+	char *str;
+
+	str = symb_check(argc, argv);
+	if (!str)
 		return(1);
-	printf("The answer is : %f\n", calc(argv[1]));
+	printf("The answer is : %f\n", calc(str));
 	return (0);
 }

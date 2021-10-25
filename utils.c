@@ -1,9 +1,10 @@
 #include "my_calc.h"
 
-int printer(char *str, int fail)
+char *printer(char *str, int fail)
 {
 	printf("%s\n", str);
-	return (fail);
+	if (!fail)
+	return (NULL);
 }
 
 int is_num(char a)
