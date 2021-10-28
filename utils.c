@@ -47,3 +47,10 @@ int is_valid(char a, int check)
 		return (0);
 	}
 }
+
+int is_bracket(char a)
+{
+	if (a == '(' || a == ')')
+		return (1);
+	return (0);
+}

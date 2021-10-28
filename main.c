@@ -2,11 +2,15 @@
 
 int main(int argc, char **argv)
 {
-	char *str;
+	char 	*str;
+	int		bracket = 0;
 
-	str = symb_check(argc, argv);
+	str = symb_check(argc, argv, &bracket);
 	if (!str)
 		return(1);
-	printf("The answer is : %f\n", calc(str));
+	if (!bracket)
+		printf("The answer is : %f\n", calc(str));
+	else
+		br_calc(str);
 	return (0);
 }

@@ -1,5 +1,19 @@
 #include "my_calc.h"
 
+double br_calc(char *str)
+{
+	int i = -1, len = 0;
+
+	while (str[++i] != ')');
+	while (str[i - len] != '(')
+	{
+		
+		++len;
+	}
+	
+	return(0);
+}
+
 double calc(char *str)
 {
 	int mal_size = 1, i = -1, k, once = 0;
