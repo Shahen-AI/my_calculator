@@ -2,16 +2,38 @@
 
 double br_calc(char *str)
 {
-	int i = -1, len = 0;
+	int i = -1, len;
+	int bracket_count = 0;
+	char *temp;
 
-	while (str[++i] != ')');
-	while (str[i - len] != '(')
+	while (str[++i])
+		if (str[i] == '(')
+			++bracket_count;
+	while (bracket_count-- > 0)
 	{
-		
-		++len;
+		i = -1;
+		len = 0;
+		while (str[++i] != ')');
+		while (str[i - len] != '(')
+			++len;
+		str[i] = ' ';
+		str[i - len] = ' ';
+		temp = malloc(sizeof(temp) * len);
+		for (int j = 0; j < len - 1; ++j)
+			temp[j] = str[i - len + j + 1];
+		temp[len - 1] = '\0';
+		temp = ft_itoa((int)calc(temp));
+		for (int j = 0; j < ft_strlen(temp); ++j)
+			str[i - len + j] = temp[j];
+		int k = ft_strlen(temp);
+		while (i - len + k != i)
+		{
+			str[i - len + k] = ' ';
+			++k;
+		}
+		free(temp);
 	}
-	
-	return(0);
+	return(calc(str));
 }
 
 double calc(char *str)
@@ -45,7 +67,11 @@ double calc(char *str)
 			nums[k] = nums[k] * 10 + (str[i] - '0');
 		if (is_valid(str[i], 1))
 		{
+			if (signs[k] == '-' && signs[k - 1] == '*')
+				nums[k] *= -1;
 			signs[k] = str[i];
+			if (signs[k] == '-' && signs[k - 1] == '*')
+				--k;
 			++k;
 		}
 		if (once == 1)
@@ -93,5 +119,7 @@ double calc(char *str)
 		++mal_size;
 	for (int j = 0; j < mal_size; ++j)
 		result += nums[j];
+	free(nums);
+	free(signs);
 	return (result);
 }

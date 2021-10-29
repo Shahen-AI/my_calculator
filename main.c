@@ -11,6 +11,6 @@ int main(int argc, char **argv)
 	if (!bracket)
 		printf("The answer is : %f\n", calc(str));
 	else
-		br_calc(str);
+		printf("The answer is : %f\n", br_calc(str));
 	return (0);
 }
