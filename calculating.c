@@ -1,5 +1,27 @@
 #include "my_calc.h"
 
+int minus_check(char *str)
+{
+	int i = 0, res = 0;
+
+	while (str[i])
+	{
+		while (is_space(str[i]))
+			++i;
+		if (str[i] == '-')
+			++res;
+		++i;
+		if (is_num(str[i]))
+		{
+			if (res == 2)
+				return (1);
+			else
+				return (0);
+		}
+	}
+	
+}
+
 double br_calc(char *str)
 {
 	int i = -1, len;
@@ -43,6 +65,7 @@ double calc(char *str)
 	double result = 0;
 	double *nums;
 	char *signs;
+			int z;
 
 	while (str[++i])
 		if (is_valid(str[i], 1))
@@ -67,11 +90,19 @@ double calc(char *str)
 			nums[k] = nums[k] * 10 + (str[i] - '0');
 		if (is_valid(str[i], 1))
 		{
-			if (signs[k] == '-' && signs[k - 1] == '*')
-				nums[k] *= -1;
 			signs[k] = str[i];
-			if (signs[k] == '-' && signs[k - 1] == '*')
-				--k;
+			z = i;
+			while (is_space(str[++z]));
+			if (str[z] == '-')
+			{
+				if (signs[k] == '-')
+					signs[k] = '+';
+				else if (signs[k] == '+')
+					signs[k] = '-';
+				else
+					nums[k] *= -1;
+				i = z;
+			}
 			++k;
 		}
 		if (once == 1)
@@ -121,5 +152,7 @@ double calc(char *str)
 		result += nums[j];
 	free(nums);
 	free(signs);
+	if (minus_check(str))
+		result *= -1;
 	return (result);
 }
