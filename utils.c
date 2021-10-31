@@ -3,7 +3,7 @@
 char *printer(char *str, int fail)
 {
 	printf("%s\n", str);
-	if (!fail)
+	// if (!fail)
 	return (NULL);
 }
 

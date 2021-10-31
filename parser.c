@@ -12,7 +12,7 @@ char *symb_check(int argc, char **argv, int *br_check)
 	if (argc == 1)
 	{
 		printf("Enter the math expression : ");
-		scanf("%s", &test);
+		scanf("%s", test);
 		str = malloc(sizeof(str) * ft_strlen(test) + 1);
 		for (int x = 0; x < ft_strlen(test); ++x)
 			str[x] = test[x];
