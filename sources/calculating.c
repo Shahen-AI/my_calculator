@@ -1,4 +1,4 @@
-#include "my_calc.h"
+#include "../my_calc.h"
 
 int minus_check(char *str)
 {
@@ -19,7 +19,7 @@ int minus_check(char *str)
 				return (0);
 		}
 	}
-	return (1);
+	return (0);
 }
 
 double br_calc(char *str)

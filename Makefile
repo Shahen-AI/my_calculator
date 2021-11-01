@@ -1,5 +1,5 @@
 NAME = my_calculator
-SRCS = main.c calculating.c parser.c utils.c
+SRCS = ${shell find "." -name "*.c"}
 OBJS = ${SRCS:.c=.o}
 
 ${NAME} : ${OBJS}

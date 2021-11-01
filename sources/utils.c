@@ -1,9 +1,14 @@
-#include "my_calc.h"
+#include "../my_calc.h"
 
-char *printer(char *str, int fail)
+char *printer(char *str, char *fd)
 {
-	printf("%s\n", str);
-	// if (!fail)
+	if (!fd)
+		printf("%s\n", str);
+	else
+	{
+		write(4, str, ft_strlen(str));
+		write(4, "\n", 1);
+	}
 	return (NULL);
 }
 
