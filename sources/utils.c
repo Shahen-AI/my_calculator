@@ -1,13 +1,13 @@
 #include "../my_calc.h"
 
-char *printer(char *str, char *fd)
+char *printer(char *str, int fd)
 {
 	if (!fd)
 		printf("%s\n", str);
 	else
 	{
-		write(4, str, ft_strlen(str));
-		write(4, "\n", 1);
+		write(fd, str, ft_strlen(str));
+		write(fd, "\n", 1);
 	}
 	return (NULL);
 }

@@ -1,6 +1,6 @@
 #include "../my_calc.h"
 
-char *symb_check(int argc, char **argv, int *br_check, char *fd)
+char *symb_check(int argc, char **argv, int *br_check, t_fd create_fd)
 {
 	int i = 0, j, len;
 	char *str;
@@ -12,8 +12,8 @@ char *symb_check(int argc, char **argv, int *br_check, char *fd)
 		printf("Error : Too many arguments.\n");
 		return (NULL);
 	}
-	if (fd)
-		str = fd;
+	if (create_fd.fd)
+		str = create_fd.fd_str;
 	else
 	{
 		if (argc == 1)
@@ -30,14 +30,14 @@ char *symb_check(int argc, char **argv, int *br_check, char *fd)
 	}
 	len = ft_strlen(str);
 	if (is_valid(str[len - 1], 1) || is_valid(str[0], 0))
-		return (printer("Error : Invalid math expression.", fd));
+		return (printer("Error : Invalid math expression.", create_fd.fd));
 	while (is_space(str[--len]))
 		if (is_valid(str[len - 1], 1))
-			return (printer("Error : Invalid math expression.", fd));
+			return (printer("Error : Invalid math expression.", create_fd.fd));
 	while (i < ft_strlen(str))
 	{
 		if (!is_valid(str[i], 1) && !is_num(str[i]) && !is_space(str[i]) && !is_bracket(str[i]))
-			return (printer("Error : There is invalid characters in the expression.", fd));
+			return (printer("Error : There is invalid characters in the expression.", create_fd.fd));
 		if (is_bracket(str[i]))
 		{
 			*br_check = 1;
@@ -46,7 +46,7 @@ char *symb_check(int argc, char **argv, int *br_check, char *fd)
 			else
 				--bracket_check;
 			if (bracket_check < 0)
-				return (printer("Error : Invalid math expression.", fd));
+				return (printer("Error : Invalid math expression.", create_fd.fd));
 		}
 		if (is_valid(str[i], 1) && i != 0)
 		{
@@ -61,15 +61,15 @@ char *symb_check(int argc, char **argv, int *br_check, char *fd)
 				--j;
 			}
 			if (j != -2 && j != -1)
-				return (printer("Error : Invalid math expression.", fd));
+				return (printer("Error : Invalid math expression.", create_fd.fd));
 		}
 		++i;
 	}
 	if (bracket_check != 0)
-		return (printer("Error : Invalid math expression.", fd));
+		return (printer("Error : Invalid math expression.", create_fd.fd));
 	i = -1;
 	while (is_space(str[++i]))
 		if (is_valid(str[i + 1], 0))
-			return (printer("Error : Invalid math expression.", fd));
+			return (printer("Error : Invalid math expression.", create_fd.fd));
 	return (str);
 }
