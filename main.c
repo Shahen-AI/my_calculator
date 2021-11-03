@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 	char 	*str;
 	int		fd;
 	int		a;
+	int		i;
 	t_fd	create_fd;
 	
 	fd = open(argv[1], 0666);
@@ -41,7 +42,10 @@ int main(int argc, char **argv)
 		while (a)
 		{
 			a = get_next_line(fd, &create_fd.fd_str);
-			helper(argc, argv, create_fd);
+			i = -1;
+			while (is_space(create_fd.fd_str[++i]));
+			if (create_fd.fd_str[i] != '\0')
+				helper(argc, argv, create_fd);
 		}
 		close(create_fd.fd);
 		printf("See your answers in file \"Answers\"\n");
