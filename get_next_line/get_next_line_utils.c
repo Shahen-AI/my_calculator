@@ -43,7 +43,7 @@ char	*ft_strjoin(char *string, char *buff)
 		while (buff[i])
 			res[j++] = buff[i++];
 	res[j] = '\0';
-	free(string);
+	// free(string);
 	return (res);
 }
 

@@ -55,7 +55,7 @@ double br_calc(char *str)
 		}
 		free(temp);
 	}
-	return(calc(str));
+	return (calc(str));
 }
 
 double calc(char *str)
@@ -65,7 +65,7 @@ double calc(char *str)
 	double result = 0;
 	double *nums;
 	char *signs;
-			int z;
+	int z;
 
 	while (str[++i])
 		if (is_valid(str[i], 1))

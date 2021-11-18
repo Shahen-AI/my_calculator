@@ -1,19 +1,25 @@
 #include "my_calc.h"
 
-int helper(int argc, char **argv, t_fd create_fd)
+int helper(int argc, char **argv, t_fd create_fd, MYSQL	*con)
 {
 	int		bracket = 0;
 	char	*str;
 	double	result;
 	char	*temp;
+	char	*str_temp;
 
 	str = symb_check(argc, argv, &bracket, create_fd);
 	if (!str)
-		return(1);
+		return(-1);
+	creating_table(con, str);
+	str_temp = ft_strjoin(str, "");
+	str = get_from_db(con);
 	if (!bracket)
 		result = calc(str);
 	else
 		result = br_calc(str);
+	inserting_table(con, str_temp, (int)result);
+	result = insert_from_db(con);
 	if (create_fd.fd)
 	{
 		temp = ft_itoa((int)result);
@@ -23,6 +29,7 @@ int helper(int argc, char **argv, t_fd create_fd)
 	}
 	else
 		printf("The answer is : %f\n", result);
+	printf("Check all expressions and answers in \"calcDB\" database!\n");
 	return (0);
 }
 
@@ -32,8 +39,11 @@ int main(int argc, char **argv)
 	int		fd;
 	int		a;
 	int		i;
+	double	returnVAL;
 	t_fd	create_fd;
-	
+	MYSQL	*con;
+
+	con = mysql_init(NULL);
 	fd = open(argv[1], 0666);
 	if (fd > 0)
 	{
@@ -45,7 +55,7 @@ int main(int argc, char **argv)
 			i = -1;
 			while (is_space(create_fd.fd_str[++i]));
 			if (create_fd.fd_str[i] != '\0')
-				helper(argc, argv, create_fd);
+				helper(argc, argv, create_fd, con);
 		}
 		close(create_fd.fd);
 		printf("See your answers in file \"Answers\"\n");
@@ -53,8 +63,9 @@ int main(int argc, char **argv)
 	else
 	{
 		create_fd.fd = 0;
-		helper(argc, argv, create_fd);
+		helper(argc, argv, create_fd, con);
 	}
 	close(fd);
+	mysql_close(con);
 	return (0);
 }

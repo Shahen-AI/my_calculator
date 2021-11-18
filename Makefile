@@ -1,9 +1,10 @@
 NAME = my_calculator
 SRCS = ${shell find "." -name "*.c"}
 OBJS = ${SRCS:.c=.o}
+MYSQL_FLAG = -lmysqlclient
 
 ${NAME} : ${OBJS}
-		gcc -o ${NAME} ${OBJS}
+		gcc ${MYSQL_FLAG} -o ${NAME} ${OBJS}
 
 all : ${NAME}
 

@@ -104,3 +104,36 @@ char		*ft_itoa(int n)
 	}
 	return (res);
 }
+
+int	ft_atoi(const char *nptr)
+{
+	int		i;
+	int		positive;
+	long	sum;
+
+	i = 0;
+	sum = 0;
+	positive = 1;
+	while ((nptr[i] >= 9 && nptr[i] <= 13) || nptr[i] == 32)
+		++i;
+	if (nptr[i] == '+')
+		++i;
+	else if (nptr[i] == '-')
+	{
+		positive *= -1;
+		++i;
+	}
+	while ((nptr[i] >= '0' && nptr[i] <= '9'))
+	{
+		sum = (sum * 10) + (nptr[i] - '0');
+		++i;
+	}
+	return (positive * sum);
+}
+
+void finish_with_error(MYSQL *con)
+{
+	fprintf(stderr, "%s\n", mysql_error(con));
+	mysql_close(con);
+	exit(1);
+}
